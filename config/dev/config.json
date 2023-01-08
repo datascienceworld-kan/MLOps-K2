@@ -1,0 +1,265 @@
+﻿{
+    "description": "Azure ML services configurations for MLOps Framework",
+    "copyright": "BizData Pty Ltd (c) 2020",
+    "workspace": {
+        "description": "Define workspace creation, auth will be provided using Azure CLI",
+        "reference": "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace(class)?view=azure-ml-py",
+        "configuration": {
+            "name": "mlopscourse",
+            "subscription_id": "101913aa-06b3-4540-8aa5-c2737387e7ee",
+            "resource_group": "datascienceworld",
+            "location": "eastus2",
+            "create_resource_group": true,
+            "tags": {"Environment": "Dev", "Course": "MLOps-K1"},
+            "friendly_name": null,
+            "storage_account": null,
+            "key_vault": "mlopscourse1903153941",
+            "app_insights": "mlopscourse7474290937",
+            "container_registry": "4cb317f096074ea496a48b55a272070e",
+            "adb_workspace": null,
+            "primary_user_assigned_identity": null,
+            "cmk_keyvault": null,
+            "resource_cmk_uri": null,
+            "hbi_workspace": false,
+            "private_endpoint_config": null,
+            "private_endpoint_auto_approval": true,
+            "exist_ok": true,
+            "show_output": true,
+            "user_assigned_identity_for_cmk_encryption": null,
+            "system_datastores_auth_mode": "accessKey"
+        }
+    },
+    "datastore": {
+        "description": "Register datastore, possible types are azure_blob_container, data_lake, data_lake_gen2, file_share, my_sql, postgre_sql, sql_database, dbfs (configuration values differ for each type)",
+        "reference": "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.datastore.datastore?view=azure-ml-py",
+        "comment": [
+            {"azure_blob_container": "access can either be sas_token or account_key"},
+            {"azure_data_lake_gen2": "access is via service principal only (tenant_id, client_id, client_secret)"},
+            {"azure_sql_database": "access is either service principal (tenant_id, client_id, client_secret) or sql user (username, password)"}
+        ],
+        "configuration": [
+            {
+                "type": "azure_blob_container",
+                "datastore_name": "workspaceblobstore",
+                "container_name": "azureml-blobstore-4cb317f0-9607-4ea4-96a4-8b55a272070e",
+                "account_name": "mlopscourse4602067535",
+                "sas_token": null,
+                "account_key": "Lykvxdgs2LdkRZaCQ1R6GFJzV7eh8O4/HfSSXiQ/yyOCjawxJz4aER9/m/0yTjraO41cb65Hscp5+ASt5Ttrdg==",
+                "protocol": null,
+                "endpoint": null,
+                "overwrite": false,
+                "create_if_not_exists": false,
+                "skip_validation": false,
+                "blob_cache_timeout": null,
+                "grant_workspace_access": false,
+                "subscription_id": "101913aa-06b3-4540-8aa5-c2737387e7ee",
+                "resource_group": "datascienceworld"
+            }
+        ]
+    },
+    "file_dataset": {
+        "description": "Register file datasets",
+        "reference": [
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.abstract_dataset.abstractdataset?view=azure-ml-py",
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.filedataset?view=azure-ml-py"
+        ],
+        "configuration": [
+            {
+                "name": "insurance",
+                "description": "File dataset for Insurance upload from .csv file",
+                "tags": null,
+                "datastore_name": "workspaceblobstore",
+                "path": "data/insurance.csv"
+            }
+        ]
+    },
+    "tabular_dataset": {
+        "description": "Register tabular datasets",
+        "reference": [
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.abstract_dataset.abstractdataset?view=azure-ml-py",
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.tabulardataset?view=azure-ml-py"
+        ],
+        "configuration": [
+            {
+                "name": "tab-insurance",
+                "from": "delimited_files",
+                "description": "Insurance classification Dataset",
+                "tags": {},
+                "datastore_name": "workspaceblobstore",
+                "path": "data/insurance.csv",
+                "validate": true,
+                "include_path": false,
+                "infer_column_types": true,
+                "set_column_types": null,
+                "separator": ",",
+                "header": true,
+                "partition_format": null,
+                "support_multi_line": false,
+                "empty_as_string": false,
+                "encoding": "utf8"               
+            }
+        ]
+    },
+    "compute": {
+        "description": "Provision compute target where each types with their own configurations. Use attach_configuration for existing resources, use provisioning_configuration to create new resources",
+        "reference": "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.compute?view=azure-ml-py",
+        "supported_types": ["amlcompute", "computeinstance", "databricks", "synapse"],
+        "configuration":[
+            {
+                "name": "vm-ds-dev-01",
+                "type": "amlcompute",
+                "provisioning_configuration": {
+                    "vm_size": "STANDARD_DS11_V2",
+                    "vm_priority": "lowpriority",
+                    "min_nodes": 0,
+                    "max_nodes": 2,
+                    "idle_seconds_before_scaledown": 1800,
+                    "admin_username": null,
+                    "admin_user_password": null,
+                    "admin_user_ssh_key": null,
+                    "vnet_resourcegroup_name": null,
+                    "vnet_name": null,
+                    "subnet_name": null,
+                    "tags": {"Environment": "dev", "Team": "DataScience"},
+                    "description": null,
+                    "remote_login_port_public_access": "Disabled",
+                    "identity_type": "SystemAssigned",
+                    "identity_id": null,
+                    "location": "australiaeast"
+                }
+            }
+        ]
+    },
+    "environment": {
+        "description": "Optional, if you want to use Azure ML environment, otherwise leave configuration empty. You can use environment file (yaml) by using file_path parameter.",
+        "reference": "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.environment.environment?view=azure-ml-py",
+        "configuration": [
+            {
+                "name": "env-modeltraining",
+                "file_path": "training/conda_dependencies.yml"
+            },
+            {
+                "name": "env-inference",
+                "file_path": "tests/integration/env_inference.yml"
+            }
+        ]
+    },
+    "pipeline": {
+        "description": "Execute published pipeline in the given order, and also to schedule them (if configured)",
+        "reference": [
+            {
+                "Experiment": "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.experiment(class)?view=azure-ml-py",
+                "PublishPipeline": "https://docs.microsoft.com/en-us/python/api/azureml-pipeline-core/azureml.pipeline.core.publishedpipeline?view=azure-ml-py",
+                "Schedule" : "https://docs.microsoft.com/en-us/python/api/azureml-pipeline-core/azureml.pipeline.core.schedule.schedule?view=azure-ml-py"
+            }
+        ],
+        "configuration": [
+            {
+                "name": "modeltraining",
+                "compute_name": "vm-ds-dev-01",
+                "environment_name": "env-modeltraining",
+                "experiment_name": "modeltraining",
+                "parameter": {
+                    "output_model_name": "insurance-model",
+                    "dataset_name": "tab-insurance",
+                    "target_column": "target",
+                    "feature_list_names": "ps_ind_01, ps_ind_02_cat, ps_ind_03, ps_ind_04_cat, ps_ind_05_cat, ps_ind_06_bin, ps_ind_07_bin, ps_ind_08_bin, ps_ind_09_bin, ps_ind_10_bin, ps_ind_11_bin, ps_ind_12_bin, ps_ind_13_bin, ps_ind_14, ps_ind_15, ps_ind_16_bin, ps_ind_17_bin, ps_ind_18_bin, ps_reg_01, ps_reg_02, ps_reg_03, ps_car_01_cat, ps_car_02_cat, ps_car_03_cat, ps_car_04_cat, ps_car_05_cat, ps_car_06_cat, ps_car_07_cat, ps_car_08_cat, ps_car_09_cat, ps_car_10_cat, ps_car_11_cat, ps_car_11, ps_car_12, ps_car_13, ps_car_14, ps_car_15, ps_calc_01, ps_calc_02, ps_calc_03, ps_calc_04, ps_calc_05, ps_calc_06, ps_calc_07, ps_calc_08, ps_calc_09, ps_calc_10, ps_calc_11, ps_calc_12, ps_calc_13, ps_calc_14, ps_calc_15_bin, ps_calc_16_bin, ps_calc_17_bin, ps_calc_18_bin, ps_calc_19_bin, ps_calc_20_bin",
+                    "model_hyperparameters": {
+                        "learning_rate": 0.02,
+                        "boosting_type": "gbdt",
+                        "objective": "binary",
+                        "metric": "auc",
+                        "sub_feature": 0.7,
+                        "num_leaves": 60,
+                        "min_data": 100,
+                        "min_hessian": 1,
+                        "verbose": 0
+                    }
+                },
+                "run_pipeline": true,
+                "publish_pipeline": true,
+                "schedule": {}
+            }
+        ]
+    },
+    "aci": {
+        "description": "Register compute instance for model consumption testing",
+        "reference": [
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.webservice.aciwebservice?view=azure-ml-py",
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model.inferenceconfig?view=azure-ml-py",
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model.model?view=azure-ml-py"
+        ],
+        "configuration": {
+            "name": "insurance-aci",
+            "inference_config": {
+                "entry_script": "integration/score.py",
+                "source_directory": "tests",
+                "environment": "env-inference"
+            },
+            "deploy_configuration": {
+                "cpu_cores": 1,
+                "memory_gb": 1,
+                "tags": {},
+                "properties": {},
+                "description": null,
+                "location": null,
+                "auth_enabled": null,
+                "ssl_enabled": null,
+                "enable_app_insights": true,
+                "ssl_cert_pem_file": null,
+                "ssl_key_pem_file": null,
+                "ssl_cname": null,
+                "dns_name_label": null,
+                "primary_key": null,
+                "secondary_key": null,
+                "collect_model_data": null,
+                "cmk_vault_base_url": null,
+                "cmk_key_name": null,
+                "cmk_key_version": null,
+                "vnet_name": null,
+                "subnet_name": null
+            },
+            "overwrite": true
+        }
+    },
+    "local_webservice": {
+        "description": "Register compute instance for model consumption testing",
+        "reference": [
+            "https://learn.microsoft.com/en-us/python/api/azureml-core/azureml.core.webservice.localwebservice?view=azure-ml-py",
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model.inferenceconfig?view=azure-ml-py",
+            "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model.model?view=azure-ml-py"
+        ],
+        "configuration": {
+            "name": "insurance-aci",
+            "inference_config": {
+                "entry_script": "integration/score.py",
+                "runtime": "python",
+                "conda_file": "tests/integration/env_inference.yml",
+                "source_directory": "tests",
+                "environment": "env-inference"
+            },
+            "deploy_configuration": {
+                "port":6788
+            },
+            "overwrite": true
+        }
+    },
+    "model": {
+        "description": "Load model for inference",
+        "reference": "https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.model(class)?view=azure-ml-py",
+        "configuration": {
+            "name": "insurance-model",
+            "version": null,
+            "tags": {
+                "Training context": "Pipeline"
+            },
+            "properties": {
+                "type": "classification"
+            },
+            "description": "Insurance classification Model",
+            "primary_metric": "auc",
+            "is_higher_better": true,
+            "dataset": "tab-insurance"
+        }
+    }
+}

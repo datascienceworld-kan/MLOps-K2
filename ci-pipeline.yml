@@ -1,0 +1,31 @@
+﻿name: $(Build.BuildId)
+
+trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  name: 'Azure Pipelines'
+
+pr:
+  branches:
+    include:
+    - main
+
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy All Files'
+  inputs:
+    Contents: |
+      **
+      !*.yml
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\MLOps-K1'
+    CleanTargetFolder: true
+    OverWrite: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: mlops-k1'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\MLOps-K1'
+    ArtifactName: mlops-k1-artifact
