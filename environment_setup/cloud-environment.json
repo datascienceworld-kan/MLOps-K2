@@ -4,6 +4,7 @@
   "parameters": {
     "baseName": {
       "type": "string",
+      "defaultValue":"IACML",
       "maxLength": 10,
       "minLength": 3,
       "metadata": {
@@ -12,7 +13,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "eastus",
+      "defaultValue": "eastus2",
       "allowedValues": [
         "eastus",
         "eastus2",
@@ -28,7 +29,8 @@
       }
     },
     "workspace": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "[concat(toLower(parameters('baseName')), 'mlops-k2')]"
     },
     "storageAccount": {
       "type": "string",
