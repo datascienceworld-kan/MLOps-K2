@@ -28,4 +28,4 @@ steps:
   displayName: 'Publish Artifact: mlops-k2'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)\MLOps-K2'
-    ArtifactName: mlops-k1-artifact
+    ArtifactName: mlops-k2-artifact
