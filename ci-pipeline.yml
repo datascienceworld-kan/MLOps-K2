@@ -25,7 +25,7 @@ steps:
     OverWrite: true
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: mlops-k1'
+  displayName: 'Publish Artifact: mlops-k2'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)\MLOps-K2'
     ArtifactName: mlops-k1-artifact
